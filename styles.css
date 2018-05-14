@@ -1,0 +1,353 @@
+/** * Eric Meyer's Reset CSS v2.0 (http://meyerweb.com/eric/tools/css/reset/) * http://cssreset.com */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp,small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+	display: block;
+}
+
+body {
+	line-height: 1.5;
+}
+
+ol, ul {
+	list-style: none;
+}
+
+blockquote, q {
+	quotes: none;
+}
+
+blockquote:before, blockquote:after,q:before, q:after {
+	content: '';
+	content: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+strong {
+	font-weight: bold;
+}
+
+/* end reset */
+
+/* mobile first */
+
+html, body {
+	height: 100vh;
+	width: 100vw;
+	margin: 0;
+	padding: 0;
+}
+
+#wrapper {
+	height: 100%;
+	width: 100%;
+}
+
+#places-container {
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 90%;
+	width: 98%;
+	padding: 1% 0 1% 1%;
+	overflow-y: scroll;
+	font-family: 'Rubik', sans-serif;
+	background-color: white;
+}
+
+li {
+	text-align: center;
+}
+
+h1 {
+	position: fixed;
+	top: 0%;
+	min-height: 50px;
+	max-height: 7%;
+	width: 95.5%;
+	margin-left: -1%;
+	padding-left: 2%;
+	font-family: 'Ewert', cursive;
+	font-size: 7vw;
+	border: 5px solid white;
+	background-color: rgb(200, 200, 200);
+}
+
+h2 {
+	font-size: 1.6em;
+}
+
+h3 {
+	display: inline-block;
+	vertical-align: top;
+	height: 100%;
+	width: 32%;
+	padding-left: 1%;
+	font-size: 4vw;
+}
+
+ul {
+	margin-top: 2%;
+}
+
+#map-container {
+	position: fixed;
+	bottom: -100%;
+	height: 80%;
+	width: 100%;
+	padding: 0 0 1% 1%;
+	z-index: 0;
+}
+
+#map {
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+}
+
+#open-map {
+	z-index: 2;
+	color: #fff;
+	background-color: #4CAF50;
+}
+
+#close-map {
+	display: none;
+	z-index: 2;
+}
+
+#pano-container {
+	position: fixed;
+	bottom: -100%;
+	height: 81%;
+	width: 100%;
+	z-index: 0;
+}
+
+#pano {
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+}
+
+#open-pano {
+	z-index: 2;
+	color: #fff;
+	background-color: #2C83FF;
+}
+
+#close-pano {
+	display: none;
+	z-index: 2;
+}
+
+footer {
+	position: fixed;
+	bottom: 0%;
+	height: 10%;
+	width: 100%;
+	padding: 1%;
+	background-color: white;
+}
+
+#footer-nav {
+	height: 100%;
+	font-family: 'Rubik', sans-serif;
+}
+
+#footer-nav p {
+	font-size: 1.2em;
+}
+
+#instructions {
+	display: none;
+}
+
+.places {
+	width: 96%;
+	padding: 2%;
+	margin-bottom: 2%;
+	background-color: rgb(200, 200, 200);
+}
+
+.spaces {
+	min-height: 50px;
+	max-height: 7%;
+	margin: -3% 0% 4% 0%;
+	background-color: rgb(200, 200, 200);
+}
+
+li a:last-child {
+	margin-bottom: 4%;
+}
+
+.places:last-child {
+	margin-bottom: 4%;
+}
+
+.buttons {
+	display: inline-block;
+	height: 100%;
+	width: 32%;
+	text-align: center;
+	cursor: pointer;
+	outline: none;
+	border: none;
+	border-radius: 15px;
+	box-shadow: 0 9px #999;
+}
+
+.button:active {
+	background-color: #3e8e41;
+	box-shadow: 0 5px #666;
+	transform: translateY(4px);
+}
+
+.big {
+	font-size: 1.5em;
+}
+
+a:link {
+	color: black;
+	text-decoration: none;
+	border-bottom: 3px groove #2C83FF;
+}
+
+a:hover, a:focus {
+	color: #2CC5FF;
+	text-decoration: none;
+	border-bottom: 4px groove #2CC5FF;
+}
+
+a:visited {
+	color: #0005FF;
+	text-decoration: none;
+	border-bottom: 3px groove #0005FF;
+}
+
+li {
+	text-align: center;
+}
+
+li a:link {
+	display: block;
+	margin-top: 10px;
+	color: black;
+	text-decoration: none;
+	padding: 1px 2px;
+	background-color: white;
+	border: 1px solid black;
+	border-radius: 30px;
+	box-shadow: 0 9px #999;
+}
+
+li a:hover, li a:focus {
+	display: block;
+	color: gray;
+	text-decoration: none;
+	padding: 1px;
+	color: white;
+	background-color: gray;
+	border: 1px solid black;
+	box-shadow: 0 9px #999;
+}
+
+li a:visited {
+	display: block;
+	color: black;
+	text-decoration: none;
+	padding: 1px 2px;
+	background-color: white;
+	border: 1px solid black;
+	box-shadow: 0 9px #999;
+}
+
+/* end mobile */
+
+/* tablet and desktop */
+
+@media only screen and (min-width: 800px) {
+
+	#places-container {
+		position: fixed;
+		top: 0%;
+		left: 0%;
+		height: 44%;
+		width: 25%;
+		padding: 1% 0 1% 1%;
+	}
+
+	h1 {
+		position: fixed;
+		top: 0%;
+		width: 24.15%;
+		padding-left: 1%;
+		font-size: 1.7vw;
+		border: 12px solid white;
+	}
+
+	h3 {
+		display: inline-block;
+		vertical-align: center;
+		width: auto;
+		padding-left: 0;
+		font-size: 1em;
+	}
+
+	#place0 {
+		margin-bottom: 5%;
+	}
+
+	#map-container {
+		position: fixed;
+		bottom: 6%;
+		left: 0%;
+		height: 42%;
+		width: 25%;
+		padding: 0 0 1% 1%;
+	}
+
+	#pano-container {
+		position: fixed;
+		top: 0%;
+		right: 0%;
+		height: 90%;
+		width: 72%;
+		padding: 1%;
+	}
+
+	#pano {
+		width: 100%;
+		height: 100%;
+	}
+
+	#instructions {
+		display: inline-block;
+		font-size: 1em;
+	}
+
+	footer {
+		height: 4%;
+	}
+
+	#open-map, #close-map, #open-pano, #close-pano {
+		display: none;
+	}
+
+	.places:last-child {
+		margin-bottom: -3%;
+	}
+
+/* end desktop */

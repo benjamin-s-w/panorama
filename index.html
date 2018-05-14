@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<meta name="HandheldFriendly" content="true" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<title>Panoramic Travel Log | Benjamin Woodruff</title>
+		<link type="text/css" rel="stylesheet" href="styles.css" />
+		<link href="https://fonts.googleapis.com/css?family=Ewert|Rubik" rel="stylesheet">
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+	</head>
+	<body>
+		<div id="wrapper">
+			<section id="places-container">
+				<h1 style="text-align: center">Pano Travel Log</h1>
+				<div id="space1" class="spaces">
+				</div><!-- end space1 -->
+				<article id="place1" class="places">
+					<h2>Vancouver, WA</h2>
+					<p>I grew up in Vancouver from 5th grade through graduating Highschool and moved back after I separated from the US Army. Below are some locations worth seeing:</p>
+					<ul>
+						<li><a href="#space1" id="wsu">WSU Vancouver</a></li>
+						<li><a href="#space1" id="clark">Clark College</a></li>
+						<li><a href="#space1" id="heritage">Heritage Highschool</a></li>
+					</ul>
+				</article><!-- end place1 -->
+				<div id="space2" class="spaces">
+				</div><!-- end space2 -->
+				<article id="place2" class="places">
+					<h2>Baghdad, Iraq</h2>
+					<p>About a month after graduating from Basic Training in 2005 at Fort Knox, Kentucky, I arrived in Iraq just south of the capital city. Below are some locations worth seeing:</p>
+					<ul>
+						<li><a href="#space2" id="baghdad">Baghdad</a></li>
+						<li><a href="#space2" id="hotel">Babylon Hotel</a></li>
+						<li><a href="#space2" id="south">South of Baghdad</a></li>
+					</ul>
+				</article><!-- end place2 -->
+				<div id="space3" class="spaces">
+				</div><!-- end space3 -->
+				<article id="place3" class="places">
+					<h2>Mosul, Iraq</h2>
+					<p>In 2007 I departed from Fort Hood, TX for my second combat deployment to Iraq, but this time to Mosul, the same place as the ancient city Ninevah. Below are some locations worth seeing:</p>
+					<ul>
+						<li><a href="#space3" id="mosul">Mosul Playground</a></li>
+						<li><a href="#space3" id="mosul1">Mosul University</a></li>
+						<li><a href="#space3" id="mosul2">House by a Cemetery</a></li>
+					</ul>
+				</article><!-- end place3 -->
+				<div id="space4" class="spaces">
+				</div><!-- end space4 -->
+				<article id="place4" class="places">
+					<h2>Texas</h2>
+					<p>Originally I moved to Texas in July of 2006 when the Army decided to move my unit there from Colorado. When I returned from my second deployment to Iraq, I met my wife there as well. Below are some locations worth seeing:</p>
+					<ul>
+						<li><a href="#space4" id="hood">Fort Hood</a></li>
+						<li><a href="#space4" id="emory">Emory Peak, Big Bend Nat'l Park</a></li>
+						<li><a href="#space4" id="elena">Santa Elena Canyon, Rio Grande</a></li>
+						<li><a href="#space4" id="bath">Bath House, Big Bend</a></li>
+						<li><a href="#space4" id="springs">Hot Springs, Big Bend</a></li>
+					</ul>
+				</article><!-- end place4 -->
+			</section><!-- end #places-container -->
+			<div id="map-container">
+				<div id="map">
+				</div><!-- end #map -->
+			</div><!-- end #map-container -->
+			<div id="pano-container">
+				<div id="pano">
+				</div>
+			</div><!-- end #pano-container -->
+			<footer>
+				<div id="footer-nav">
+					<h3>&copy; 2018 Benjamin Woodruff</h3>
+					<button id="open-map" class="buttons">
+						<p>Open Map</p>
+					</button>
+					<button id="close-map" class="buttons">
+						<p>Close Map</p>
+					</button>
+					<button id="open-pano" class="buttons">
+						<p>Open Pano</p>
+					</button>
+					<button id="close-pano" class="buttons">
+						<p>Close Pano</p>
+					</button>
+					<p id="instructions"> | After seeing my marked locations, try exploring each area by dragging the little yellow man! Also try the experience on your phone.</p>
+				</div><!-- end #footer-nav -->
+			</footer>
+		</div><!-- end wrapper -->
+		<script type="text/javascript">
+
+			//nested array of location related information
+			var locations = [
+				["WSU Vancouver", 45.730968, -122.636866, "#space1"],//Vancouver, #1
+				["Clark College", 45.635618, -122.651496, "#space1"],//#2
+				["Heritage Highschool", 45.679974, -122.539327, "#space1"],//#3
+				["Baghdad", 33.293231, 44.426465, "#space2"],//Baghdad, #4
+				["Babylon Hotel", 33.291708, 44.390009, "#space2"],//#5
+				["South of Baghdad", 33.230139, 44.400777, "#space2"],//#6
+				["Mosul Playground", 36.305588, 43.200964, "#space3"],//Mosul, #7
+				["Mosul University", 36.376432, 43.144517, "#space3"],//#8
+				["House by a Cemetery", 36.456529, 43.342072, "#space3"],//#9
+				["Fort Hood Army Base", 31.149167, -97.720217, "#space4"],//Texas, #10
+				["Big Bend National Park", 29.245968, -103.305226, "#space4"],//#11
+				["Santa Elena Canyon", 29.165639, -103.610570, "#space4"],//#12
+				["Big Bend Bath House", 29.177492, -102.998709, "#space4"],//#13
+				["Big Bend Hot Springs", 29.179508, -102.995501, "#space4"]//#14
+			];
+
+			//variable related to textWindows
+			var marker, i;
+
+			//array of textWindow messages
+			var iwText = [
+				'<h2>Washington State University Vancouver</h2>',//#wsu, #1
+				'<h2>Clark College</h2>',//#clark, #2
+				'<h2>Heritage Highschool</h2>',//#heritage, #3
+				'<h2>Badghdad</h2>',//#baghdad, #4
+				'<h2>Babylon Hotel</h2>',//#hotel, #5
+				'<h2>South of Baghdad</h2>',//#south, #6
+				'<h2>Mosul Playground</h2>',//#mosul, #7
+				'<h2>Mosul Outskirts #1</h2>',//#mosul1, #8
+				'<h2>Mosul Outskirts #2</h2>',//#mosul2, #9
+				'<h2>Fort Hood, TX</h2>',//#hood, #10
+				'<h2>Big Bend National Park, Emory Peak, TX</h2>',//#emory, #11
+				'<h2>Santa Elena Canyon, Rio Grande</h2>',//#elena, #12
+				'<h2>Big Bend Bath House</h2>',//#bath, #13
+				'<h2>Big Bend Hot Springs, TX</h2>'//#springs, #14
+			];
+
+			//variables to represent the anchor link (tried referencing locations nested array, but that didn't work for some reason in the function later on)
+			var wsu = document.getElementById("wsu");
+			var clark = document.getElementById("clark");
+			var heritage = document.getElementById("heritage");
+			var baghdad = document.getElementById("baghdad");
+			var hotel = document.getElementById("hotel");
+			var south = document.getElementById("south");
+			var mosul = document.getElementById("mosul");
+			var mosul1 = document.getElementById("mosul1");
+			var mosul2 = document.getElementById("mosul2");
+			var hood = document.getElementById("hood");
+			var emory = document.getElementById("emory");
+			var elena = document.getElementById("elena");
+			var bath = document.getElementById("bath");
+			var springs = document.getElementById("springs");
+
+			//map styles
+			var myStyles = [{"featureType":"all","elementType":"geometry","stylers":[{"hue":"#ff4400"},{"saturation":-68},{"lightness":-4},{"gamma":0.72},{"visibility":"off"}]},{"featureType":"all","elementType":"geometry.fill","stylers":[{"visibility":"on"}]},{"featureType":"all","elementType":"geometry.stroke","stylers":[{"visibility":"on"}]},{"featureType":"all","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"all","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"administrative","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"landscape.man_made","elementType":"geometry","stylers":[{"hue":"#0077ff"},{"gamma":3.1}]},{"featureType":"landscape.man_made","elementType":"labels","stylers":[{"visibility":"off"}]},{"featureType":"landscape.man_made","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"landscape.man_made","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"landscape.natural","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"poi","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"poi.park","elementType":"all","stylers":[{"hue":"#44ff00"},{"saturation":-23}]},{"featureType":"road","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"transit","elementType":"labels.text.stroke","stylers":[{"saturation":-64},{"hue":"#ff9100"},{"lightness":16},{"gamma":0.47},{"weight":2.7}]},{"featureType":"transit.line","elementType":"geometry","stylers":[{"lightness":-48},{"hue":"#ff5e00"},{"gamma":1.2},{"saturation":-23}]},{"featureType":"transit.station","elementType":"labels.text","stylers":[{"visibility":"off"}]},{"featureType":"water","elementType":"all","stylers":[{"hue":"#00ccff"},{"gamma":0.44},{"saturation":-33}]},{"featureType":"water","elementType":"geometry.fill","stylers":[{"visibility":"on"}]},{"featureType":"water","elementType":"labels.text.fill","stylers":[{"hue":"#007fff"},{"gamma":0.77},{"saturation":65},{"lightness":99}]},{"featureType":"water","elementType":"labels.text.stroke","stylers":[{"gamma":0.11},{"weight":5.6},{"saturation":99},{"hue":"#0091ff"},{"lightness":-86}]}]
+
+			//creates map, pano, infoWindows and relates them to respective information and variables from outside the function
+			function initMap() {
+
+				//declares starting location/position for the map and pano
+				var mapPos = new google.maps.LatLng(locations[0][1], locations[0][2]);
+				var wsuPos = new google.maps.LatLng(locations[0][1], locations[0][2]);
+				var clarkPos = new google.maps.LatLng(locations[1][1], locations[1][2]);
+				var heritagePos = new google.maps.LatLng(locations[2][1], locations[2][2]);
+				var baghdadPos = new google.maps.LatLng(locations[3][1], locations[3][2]);
+				var hotelPos = new google.maps.LatLng(locations[4][1], locations[4][2]);
+				var southPos = new google.maps.LatLng(locations[5][1], locations[5][2]);
+				var mosulPos = new google.maps.LatLng(locations[6][1], locations[6][2]);
+				var mosul1Pos = new google.maps.LatLng(locations[7][1], locations[7][2]);
+				var mosul2Pos = new google.maps.LatLng(locations[8][1], locations[8][2]);
+				var hoodPos = new google.maps.LatLng(locations[9][1], locations[9][2]);
+				var emoryPos = new google.maps.LatLng(locations[10][1], locations[10][2]);
+				var elenaPos = new google.maps.LatLng(locations[11][1], locations[11][2]);
+				var bathPos = new google.maps.LatLng(locations[12][1], locations[12][2]);
+				var springsPos = new google.maps.LatLng(locations[13][1], locations[13][2]);
+
+				//declares new, empty infoWindows
+				var infoWindow = new google.maps.InfoWindow();
+
+				//declares new map
+				var map = new google.maps.Map(document.getElementById('map'), {
+					center: mapPos,
+					zoom: 10,
+					streetViewControl: true,
+					styles: myStyles
+				});
+
+				//declares new panorama
+				var panorama = new google.maps.StreetViewPanorama(document.getElementById('pano'), {
+					position: mapPos,
+					pov: {heading: 34, pitch: 10},
+					motionTracking: false
+				});
+
+				//loops through the locations nested array, starts a new marker for each array item, creates infoWindows, and changes views
+				for (i=0; i<locations.length; i++){
+
+					//declares a variable location based on locations nested array
+					var myLatLng = new google.maps.LatLng(locations[i][1], locations[i][2])
+
+					//declares new markers and settings
+					var marker = new google.maps.Marker({
+						position: myLatLng,
+						map: map,
+						url: locations[i][3],
+						title: 'Click To Zoom'
+					});
+
+					//set content and open infoWindows
+					google.maps.event.addListener(marker, 'click', (function(marker, i) {
+						return function() {
+							infoWindow.setContent(iwText[i]);
+							infoWindow.open(map, marker);
+						}
+					})(marker, i));
+
+					//changes the html content, map location, and pano position in view
+					marker.addListener("click", function(){
+						window.location.href = this.url;
+						map.setZoom(12);
+						map.setCenter(this.getPosition());
+						panorama.setPosition(this.getPosition());
+					});
+
+				}//end for loop
+
+				//set map and pano based on URL click (tried using locations[i] and a [4] to reference URLs placed in the nested array, but it didn't work for some reason)
+				google.maps.event.addDomListener(wsu, "click", function(){
+					window.location.href = wsu;
+					marker.setPosition(wsuPos);
+					map.setZoom(12);
+					map.setCenter(marker.getPosition());
+					panorama.setPosition(marker.getPosition());
+					infoWindow.setContent(iwText[0]);
+					infoWindow.open(map, marker);
+				});
+				google.maps.event.addDomListener(clark, "click", function(){
+					window.location.href = clark;
+					marker.setPosition(clarkPos);
+					map.setZoom(12);
+					map.setCenter(marker.getPosition());
+					panorama.setPosition(marker.getPosition());
+					infoWindow.setContent(iwText[1]);
+					infoWindow.open(map, marker);
+				});
+				google.maps.event.addDomListener(heritage, "click", function(){
+					window.location.href = heritage;
+					marker.setPosition(heritagePos);
+					map.setZoom(12);
+					map.setCenter(marker.getPosition());
+					panorama.setPosition(marker.getPosition());
+					infoWindow.setContent(iwText[2]);
+					infoWindow.open(map, marker);
+				});
+				google.maps.event.addDomListener(baghdad, "click", function(){
+					window.location.href = baghdad;
+					marker.setPosition(baghdadPos);
+					map.setZoom(12);
+					map.setCenter(marker.getPosition());
+					panorama.setPosition(marker.getPosition());
+					infoWindow.setContent(iwText[3]);
+					infoWindow.open(map, marker);
+				});
+				google.maps.event.addDomListener(hotel, "click", function(){
+					window.location.href = hotel;
+					marker.setPosition(hotelPos);
+					map.setZoom(12);
+					map.setCenter(marker.getPosition());
+					panorama.setPosition(marker.getPosition());
+					infoWindow.setContent(iwText[4]);
+					infoWindow.open(map, marker);
+				});
+				google.maps.event.addDomListener(south, "click", function(){
+					window.location.href = south;
+					marker.setPosition(southPos);
+					map.setZoom(12);
+					map.setCenter(marker.getPosition());
+					panorama.setPosition(marker.getPosition());
+					infoWindow.setContent(iwText[5]);
+					infoWindow.open(map, marker);
+				});
+				google.maps.event.addDomListener(mosul, "click", function(){
+					window.location.href = mosul;
+					marker.setPosition(mosulPos);
+					map.setZoom(12);
+					map.setCenter(marker.getPosition());
+					panorama.setPosition(marker.getPosition());
+					infoWindow.setContent(iwText[6]);
+					infoWindow.open(map, marker);
+				});
+				google.maps.event.addDomListener(mosul1, "click", function(){
+					window.location.href = mosul1;
+					marker.setPosition(mosul1Pos);
+					map.setZoom(12);
+					map.setCenter(marker.getPosition());
+					panorama.setPosition(marker.getPosition());
+					infoWindow.setContent(iwText[7]);
+					infoWindow.open(map, marker);
+				});
+				google.maps.event.addDomListener(mosul2, "click", function(){
+					window.location.href = mosul2;
+					marker.setPosition(mosul2Pos);
+					map.setZoom(12);
+					map.setCenter(marker.getPosition());
+					panorama.setPosition(marker.getPosition());
+					infoWindow.setContent(iwText[8]);
+					infoWindow.open(map, marker);
+				});
+				google.maps.event.addDomListener(hood, "click", function(){
+					window.location.href = hood;
+					marker.setPosition(hoodPos);
+					map.setZoom(12);
+					map.setCenter(marker.getPosition());
+					panorama.setPosition(marker.getPosition());
+					infoWindow.setContent(iwText[9]);
+					infoWindow.open(map, marker);
+				});
+				google.maps.event.addDomListener(emory, "click", function(){
+					window.location.href = emory;
+					marker.setPosition(emoryPos);
+					map.setZoom(12);
+					map.setCenter(marker.getPosition());
+					panorama.setPosition(marker.getPosition());
+					infoWindow.setContent(iwText[10]);
+					infoWindow.open(map, marker);
+				});
+				google.maps.event.addDomListener(elena, "click", function(){
+					window.location.href = elena;
+					marker.setPosition(elenaPos);
+					map.setZoom(12);
+					map.setCenter(marker.getPosition());
+					panorama.setPosition(marker.getPosition());
+					infoWindow.setContent(iwText[11]);
+					infoWindow.open(map, marker);
+				});
+				google.maps.event.addDomListener(bath, "click", function(){
+					window.location.href = bath;
+					marker.setPosition(bathPos);
+					map.setZoom(12);
+					map.setCenter(marker.getPosition());
+					panorama.setPosition(marker.getPosition());
+					infoWindow.setContent(iwText[12]);
+					infoWindow.open(map, marker);
+				});
+				google.maps.event.addDomListener(springs, "click", function(){
+					window.location.href = springs;
+					marker.setPosition(springsPos);
+					map.setZoom(12);
+					map.setCenter(marker.getPosition());
+					panorama.setPosition(marker.getPosition());
+					infoWindow.setContent(iwText[13]);
+					infoWindow.open(map, marker);
+				});
+
+				//starts the street view panorama
+				map.setStreetView(panorama);
+
+				//these reload the window after the user resizes or reloads the page
+				google.maps.event.addDomListener(window, 'resize', initMap);
+				google.maps.event.addDomListener(window, 'load', initMap);
+
+			}//end initMap function
+
+			//buttons scripts
+			$(document).ready(function(){
+				/* if (window.matchMedia("(min-width: 800px)").matches) { // the viewport is at least 400 pixels wide */
+				var isMobile = {
+					Android: function() {
+						return navigator.userAgent.match(/Android/i);
+					},
+					BlackBerry: function() {
+						return navigator.userAgent.match(/BlackBerry/i);
+					},
+					iOS: function() {
+						return navigator.userAgent.match(/iPhone|iPad|iPod/i);
+					},
+					Opera: function() {
+						return navigator.userAgent.match(/Opera Mini/i);
+					},
+					Windows: function() {
+						return navigator.userAgent.match(/IEMobile/i);
+					},
+					any: function() {
+						return (isMobile.Android() || isMobile.BlackBerry() || isMobile.iOS() || isMobile.Opera() || isMobile.Windows());
+					}
+				};
+				if (isMobile.any()) {
+					$("#places-container").ready(function(){
+						$("#wsu").on("click", function(){
+							$("#pano-container").animate({'bottom':'10%'}, 1000, "swing");
+							$("#map-container").animate({'bottom':'-100%'}, 1000, "swing");
+							$("#open-pano").hide();
+							$("#close-map").hide();
+							$("#close-pano").show();
+							$("#open-map").show();
+						});
+						$("#clark").on("click", function(){
+							$("#pano-container").animate({'bottom':'10%'}, 1000, "swing");
+							$("#map-container").animate({'bottom':'-100%'}, 1000, "swing");
+							$("#open-pano").hide();
+							$("#close-map").hide();
+							$("#close-pano").show();
+							$("#open-map").show();
+						});
+						$("#heritage").on("click", function(){
+							$("#pano-container").animate({'bottom':'10%'}, 1000, "swing");
+							$("#map-container").animate({'bottom':'-100%'}, 1000, "swing");
+							$("#open-pano").hide();
+							$("#close-map").hide();
+							$("#close-pano").show();
+							$("#open-map").show();
+						});
+						$("#baghdad").on("click", function(){
+							$("#pano-container").animate({'bottom':'10%'}, 1000, "swing");
+							$("#map-container").animate({'bottom':'-100%'}, 1000, "swing");
+							$("#open-pano").hide();
+							$("#close-map").hide();
+							$("#close-pano").show();
+							$("#open-map").show();
+						});
+						$("#hotel").on("click", function(){
+							$("#pano-container").animate({'bottom':'10%'}, 1000, "swing");
+							$("#map-container").animate({'bottom':'-100%'}, 1000, "swing");
+							$("#open-pano").hide();
+							$("#close-map").hide();
+							$("#close-pano").show();
+							$("#open-map").show();
+						});
+						$("#south").on("click", function(){
+							$("#pano-container").animate({'bottom':'10%'}, 1000, "swing");
+							$("#map-container").animate({'bottom':'-100%'}, 1000, "swing");
+							$("#open-pano").hide();
+							$("#close-map").hide();
+							$("#close-pano").show();
+							$("#open-map").show();
+						});
+						$("#mosul").on("click", function(){
+							$("#pano-container").animate({'bottom':'10%'}, 1000, "swing");
+							$("#map-container").animate({'bottom':'-100%'}, 1000, "swing");
+							$("#open-pano").hide();
+							$("#close-map").hide();
+							$("#close-pano").show();
+							$("#open-map").show();
+						});
+						$("#mosul1").on("click", function(){
+							$("#pano-container").animate({'bottom':'10%'}, 1000, "swing");
+							$("#map-container").animate({'bottom':'-100%'}, 1000, "swing");
+							$("#open-pano").hide();
+							$("#close-map").hide();
+							$("#close-pano").show();
+							$("#open-map").show();
+						});
+						$("#mosul2").on("click", function(){
+							$("#pano-container").animate({'bottom':'10%'}, 1000, "swing");
+							$("#map-container").animate({'bottom':'-100%'}, 1000, "swing");
+							$("#open-pano").hide();
+							$("#close-map").hide();
+							$("#close-pano").show();
+							$("#open-map").show();
+						});
+						$("#hood").on("click", function(){
+							$("#pano-container").animate({'bottom':'10%'}, 1000, "swing");
+							$("#map-container").animate({'bottom':'-100%'}, 1000, "swing");
+							$("#open-pano").hide();
+							$("#close-map").hide();
+							$("#close-pano").show();
+							$("#open-map").show();
+						});
+						$("#elena").on("click", function(){
+							$("#pano-container").animate({'bottom':'10%'}, 1000, "swing");
+							$("#map-container").animate({'bottom':'-100%'}, 1000, "swing");
+							$("#open-pano").hide();
+							$("#close-map").hide();
+							$("#close-pano").show();
+							$("#open-map").show();
+						});
+						$("#emory").on("click", function(){
+							$("#pano-container").animate({'bottom':'10%'}, 1000, "swing");
+							$("#map-container").animate({'bottom':'-100%'}, 1000, "swing");
+							$("#open-pano").hide();
+							$("#close-map").hide();
+							$("#close-pano").show();
+							$("#open-map").show();
+						});
+						$("#bath").on("click", function(){
+							$("#pano-container").animate({'bottom':'10%'}, 1000, "swing");
+							$("#map-container").animate({'bottom':'-100%'}, 1000, "swing");
+							$("#open-pano").hide();
+							$("#close-map").hide();
+							$("#close-pano").show();
+							$("#open-map").show();
+						});
+						$("#springs").on("click", function(){
+							$("#pano-container").animate({'bottom':'10%'}, 1000, "swing");
+							$("#map-container").animate({'bottom':'-100%'}, 1000, "swing");
+							$("#open-pano").hide();
+							$("#close-map").hide();
+							$("#close-pano").show();
+							$("#open-map").show();
+						});
+					});//ends places-container.ready function
+				}//ends if conditional statement
+				$("#footer-nav").ready(function(){
+					$("#open-map").on("click", function(){//open map and close pano, if it's open already
+						$("#map-container").animate({'bottom':'10%'}, 1000, "swing");
+						$("#pano-container").animate({'bottom':'-100%'}, 1000, "swing");
+						$(this).hide();
+						$("#close-pano").hide();
+						$("#close-map").show();
+						$("#open-pano").show();
+					});
+					$("#close-map").on("click", function(){
+						$("#map-container").animate({'bottom':'-100%'}, 1000, "swing");
+						$(this).hide();
+						$("#open-map").show();
+					});
+					$("#open-pano").on("click", function(){//open pano and close map, if it's open already
+						$("#pano-container").animate({'bottom':'10%'}, 1000, "swing");
+						$("#map-container").animate({'bottom':'-100%'}, 1000, "swing");
+						$(this).hide();
+						$("#close-map").hide();
+						$("#close-pano").show();
+						$("#open-map").show();
+					});
+					$("#close-pano").on("click", function(){
+						$("#pano-container").animate({'bottom':'-100%'}, 1000, "swing");
+						$(this).hide();
+						$("#open-pano").show();
+					});
+				});//end footer-nav only function
+			});//end main function
+		</script>
+		<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAS-9tIvS8lvCRgZ-pUlv6CW4weq1ZEABo&callback=initMap"
+		async defer></script>
+	</body>
+</html>
